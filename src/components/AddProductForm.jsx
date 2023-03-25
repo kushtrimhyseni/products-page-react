@@ -5,21 +5,31 @@ const ProductForm = () => {
   const [productTitle, setProductTitle] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [productPrice, setProductPrice] = useState("");
+  const [productImage, setProductImage] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formData = new FormData();
+    formData.append("product_title", productTitle);
+    formData.append("product_description", productDescription);
+    formData.append("product_price", productPrice);
+    if (productImage) {
+      formData.append("product_image", productImage);
+    }
+
     try {
-      await axios.post("http://localhost:3001/add-product", {
-        product_title: productTitle,
-        product_description: productDescription,
-        product_price: productPrice,
+      await axios.post("http://localhost:3001/add-product", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       alert("Product added successfully.");
       setProductTitle("");
       setProductDescription("");
       setProductPrice("");
+      setProductImage(null);
     } catch (error) {
       console.error(error);
       alert("Failed to add product.");
@@ -66,6 +76,16 @@ const ProductForm = () => {
           />
         </label>
         <br />
+        <label>
+          Foto:
+          <input
+            className="bg-gray-50 focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal focus:ring-blue-500 focus:border-blue-500"
+            type="file"
+            onChange={(e) => setProductImage(e.target.files[0])}
+            accept="image/*"
+          />
+        </label>
+        <br />
         <button
           type="submit"
           className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
@@ -76,5 +96,4 @@ const ProductForm = () => {
     </div>
   );
 };
-
 export default ProductForm;

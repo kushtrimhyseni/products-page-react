@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import defaultProductImage from "../../public/uploads/thumbnail-default.jpg";
 
 const GetProducts = () => {
   const [products, setProducts] = useState([]);
@@ -55,10 +56,19 @@ const GetProducts = () => {
             key={product.product_id}
             className="bg-gray-200 rounded-md p-4 shadow-md"
           >
-            <h2>{product.product_title}</h2>
-            <p>{product.product_description}</p>
-            <p>Price: ${product.product_price}</p>
-            <p>Created at: {formatDate(product.product_created_date)}</p>
+            <img
+              className="w-full h-48 max-h-48"
+              src={
+                product?.product_image
+                  ? `http://localhost:3001/uploads/${product?.product_image}`
+                  : `${defaultProductImage}`
+              }
+              alt="ProductImage"
+            />
+            <h2>{product?.product_title}</h2>
+            <p>{product?.product_description}</p>
+            <p>Price: ${product?.product_price}</p>
+            <p>Created at: {formatDate(product?.product_created_date)}</p>
           </li>
         ))}
       </ul>
