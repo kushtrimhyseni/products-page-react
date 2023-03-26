@@ -19,11 +19,15 @@ const ProductForm = () => {
     }
 
     try {
-      await axios.post("http://localhost:3001/add-product", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axios.post(
+        "http://localhost:3001/api/products/add-product",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       alert("Product added successfully.");
       setProductTitle("");
